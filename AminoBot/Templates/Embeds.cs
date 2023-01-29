@@ -63,6 +63,20 @@ namespace AminoBot.Templates
             return embed;
         }
 
+        public static EmbedBuilder ResourceUnavailable()
+        {
+            EmbedBuilder embed = new EmbedBuilder();
+            embed.Color = Color.Blue;
+            embed.Title = "Something went wrong!";
+            embed.Description = $"The resource you're trying to access might not be available at the moment!\nPlease try again later or report the issue.";
+            embed.Footer = new EmbedFooterBuilder()
+            {
+                Text = $"Thank you for using AminoBot!"
+            };
+
+            return embed;
+        }
+
         public static EmbedBuilder TimeOutEmbed(int secondsLeft)
         {
             EmbedBuilder embed = new EmbedBuilder();

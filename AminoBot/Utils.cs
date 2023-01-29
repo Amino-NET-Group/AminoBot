@@ -4,6 +4,7 @@ using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Security.Cryptography;
 using System.Text;
 using System.Text.Json;
@@ -21,6 +22,8 @@ namespace AminoBot
         public static string clientPassword;
         public static string clientDevice;
 
+        public static string ID17Device;
+
         public static void CreateConfig()
         {
             if(!File.Exists("Aminobot/config.json"))
@@ -31,6 +34,7 @@ namespace AminoBot
                 json.Add("accountEmail", "");
                 json.Add("accountPassword", "");
                 json.Add("accountDeviceId", "");
+                json.Add("ID17Endpoint", "");
                 Directory.CreateDirectory("Aminobot");
                 using (StreamWriter sw = File.CreateText("AminoBot/config.json"))
                 {
@@ -47,6 +51,7 @@ namespace AminoBot
             clientEmail = (string)JObject.Parse(data)["accountEmail"];
             clientPassword = (string)JObject.Parse(data)["accountPassword"];
             clientDevice = (string)JObject.Parse(data)["accountDeviceId"];
+            ID17Device = (string)JObject.Parse(data)["ID17Endpoint"];
         }
 
 
@@ -69,6 +74,19 @@ namespace AminoBot
                                  .Select(x => Convert.ToByte(hex.Substring(x, 2), 16))
                                  .ToArray();
             }
+
+            public static string GetWebDevice()
+            {
+                try
+                {
+                    WebClient WClient = new WebClient();
+                    string result = WClient.DownloadString(Utils.ID17Device);
+                    if(!result.StartsWith("17")) { throw new Exception(); }
+                    return result;
+                }
+                catch { throw new Exception(); }
+            }
+
 
             public static string deviceId(int prefixMode = 19)
             {

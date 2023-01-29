@@ -18,7 +18,8 @@ namespace AminoBot.Commands
                 $"**/communityid** <communityURL> | <Amino URL from post, chat or user in community> - Gets the Community ID of a given Amino URL\n" +
                 $"**/public-url** <user URL> - Gets the public profile URL of an Amino User from object ID or profile URL\n" +
                 $"**/device-extra** <prefix> - Allows you to generate a Device ID with a specific Prefix\n" +
-                $"**/verify** <deviceId> - Allows you to see if a device ID is valid or not";
+                $"**/verify** <deviceId> - Allows you to see if a device ID is valid or not\n" +
+                $"**/web-device** - Allows you to generate a prefix 17 Device ID";
         public static string aboutText = $"The AminoBot Project is a Discord Bot dedicated to being an Amino toolkit in the discord bot Format\n" +
                         $"The AminoBot Project is made in the C# Programming language and is powered by **Amino.NET**(*<https://github.com/FabioGaming/Amino.Net>*)\n" +
                         $"This bot has been developed and made possible by **Fabiogaming#0909**(*503967480625233932*)";
