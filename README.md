@@ -13,6 +13,7 @@
 - /public-url <user URL> - Gets the public profile URL of an Amino User
 - /device-extra <prefix> - Allows you to generate a Device ID with a specific Prefix (Available Prefixes: 18, 19, 22, 32, 42, 52)
 - /verify - Allows you to see if a device ID is valid or not
+- /web-device - Allows you to generate a prefix 17 Device ID
 ### Extras:
 - The bot has a 30 second timeout after every command, this is to prevent spam or any Amino API errors like "Too many requests" or "403 Forbidden"
 - If you want to invite the bot you can do it *[HERE](https://discord.com/api/oauth2/authorize?client_id=1068683105189253200&permissions=277025442816&scope=bot%20applications.commands)*
