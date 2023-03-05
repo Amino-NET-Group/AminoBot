@@ -25,13 +25,7 @@ namespace AminoBot.Events
                     
                     response.Color = Color.Blue;
                     response.Title = "AminoBot Help";
-                    response.Description = $"List of Commands:\n" +
-                        $"**/amino-help** - Shows a Help / About menu\n" +
-                        $"**/device** - Generates a Device ID\n" +
-                        $"**/objectid** <URL> - Gets the Object ID of a specific Amino URL\n" +
-                        $"**/communityid** <communityURL> | <Amino URL from post, chat or user in community> - Gets the Community ID of a given Amino URL\n" +
-                        $"**/public-url** <user URL> - Gets the public profile URL of an Amino User\n" +
-                        $"**/device-extra** <prefix> - Allows you to generate a Device ID with a specific Prefix";
+                    response.Description = amino_help.helpText;
                     response.Footer = new EmbedFooterBuilder()
                     {
                         Text = "Thank you for using AminoBot"

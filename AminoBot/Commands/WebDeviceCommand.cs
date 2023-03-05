@@ -1,5 +1,7 @@
 ﻿using Discord.Interactions;
+using Microsoft.CSharp;
 using System;
+using System.CodeDom.Compiler;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -17,6 +19,9 @@ namespace AminoBot.Commands
                 await RespondAsync($"```{Utils.ExtraGen.GetWebDevice()}```");
             }
             catch { await RespondAsync("", new[] { Templates.Embeds.ResourceUnavailable().Build() }); }
+
+
+
         }
     }
 }

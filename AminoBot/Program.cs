@@ -2,7 +2,9 @@
 using Discord;
 using Discord.Interactions;
 using Discord.WebSocket;
+using Microsoft.CSharp;
 using Microsoft.Extensions.DependencyInjection;
+using System.CodeDom.Compiler;
 using System.Reflection;
 
 namespace AminoBot
@@ -16,6 +18,8 @@ namespace AminoBot
 
         static async Task Main(string[] args)
         {
+
+
             Console.WriteLine("Starting Bot...");
             Utils.CreateConfig();
             Utils.ReadConfig();
@@ -37,6 +41,9 @@ namespace AminoBot
             };
 
             client = new DiscordSocketClient(socketConfig);
+
+
+
 
 
 

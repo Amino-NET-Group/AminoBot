@@ -19,10 +19,11 @@ namespace AminoBot.Commands
                 $"**/public-url** <user URL> - Gets the public profile URL of an Amino User from object ID or profile URL\n" +
                 $"**/device-extra** <prefix> - Allows you to generate a Device ID with a specific Prefix\n" +
                 $"**/verify** <deviceId> - Allows you to see if a device ID is valid or not\n" +
-                $"**/web-device** - Allows you to generate a prefix 17 Device ID";
+                $"**/web-device** - Allows you to generate a prefix 17 Device ID\n " +
+                $"**/created-time** - Allows you to see the Date and Time a user has joined Amino";
         public static string aboutText = $"The AminoBot Project is a Discord Bot dedicated to being an Amino toolkit in the discord bot Format\n" +
                         $"The AminoBot Project is made in the C# Programming language and is powered by **Amino.NET**(*<https://github.com/FabioGaming/Amino.Net>*)\n" +
-                        $"This bot has been developed and made possible by **Fabiogaming#0909**(*503967480625233932*)";
+                        $"This bot has been developed and made possible by **FabioGaming#6914**(*1071594003717423134*)";
 
 
         [SlashCommand("amino-help", "See a list of commands and info about this bot!")]
@@ -36,6 +37,9 @@ namespace AminoBot.Commands
             {
                 Text = "Thank you for using AminoBot"
             };
+            response.AddField("Links", "[GitHub](https://github.com/FabioGaming/AminoBot)\n[Amino.NET Server](https://discord.com/invite/qyv8P2gegK)\n[Amino.NET GitHub](https://github.com/FabioGaming/Amino.Net)");
+            
+
 
             var helpButton = new ButtonBuilder();
             helpButton.IsDisabled = true;
