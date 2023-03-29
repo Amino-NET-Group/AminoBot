@@ -91,5 +91,45 @@ namespace AminoBot.Templates
             return embed;
         }
 
+        public static EmbedBuilder webDeviceCountWarn(int currCount)
+        {
+            EmbedBuilder embed = new EmbedBuilder();
+            embed.Color = Color.Blue;
+            embed.Title = "AminoBot HUNGRY";
+            embed.Description = $"The current amount of web Device IDs is less than 100 (Count: {currCount}), please refill web devices soon!";
+            embed.Footer = new EmbedFooterBuilder()
+            {
+                Text = $"{DateTime.Now.ToString("dd/MM/yyyy")} / {DateTime.Now.ToString("HH:mm:ss")}"
+            };
+            return embed;
+        }
+
+        public static EmbedBuilder webDevicesAdded(int count, int total)
+        {
+            EmbedBuilder embed = new EmbedBuilder();
+            embed.Color = Color.Blue;
+            embed.Title = "Added new Web Devices";
+            embed.Description = $"Successfully added {count} web Device IDs. (New Total: {total})";
+            embed.Footer = new EmbedFooterBuilder()
+            {
+                Text = $"{DateTime.Now.ToString("dd/MM/yyyy")} / {DateTime.Now.ToString("HH:mm:ss")}"
+            };
+            return embed;
+        }
+
+        public static EmbedBuilder noWebDevices()
+        {
+            EmbedBuilder embed = new EmbedBuilder();
+            embed.Color = Color.Blue;
+            embed.Title = "No Web Devices available";
+            embed.Description = "It seems like there are no available web devices at the moment, try again later!";
+            embed.Footer = new EmbedFooterBuilder()
+            {
+                Text = $"Thank you for using AminoBot!"
+            };
+
+            return embed;
+        }
+
     }
 }

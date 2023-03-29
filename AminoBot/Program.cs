@@ -62,6 +62,7 @@ namespace AminoBot
             client.Ready += events.onClientReady;
             client.InteractionCreated += events.onInteraction;
             client.ButtonExecuted += events.onButtonPress;
+            client.MessageReceived += events.onMsg;
             //Events end here
 
 
@@ -112,6 +113,10 @@ namespace AminoBot
             public async Task onButtonPress(SocketMessageComponent button)
             {
                 await AminoBot.Events.OnButtonInteraction.onButtonInteraction(button);
+            }
+            public async Task onMsg(SocketMessage msg)
+            {
+                Utils.deviceFileCheck(msg);
             }
 
         }

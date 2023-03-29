@@ -16,6 +16,8 @@ namespace AminoBot.Commands
         {
             try
             {
+                Utils.ExtraGen.checkCount();
+                if(Utils.webDevices.Count == 0) { await RespondAsync("", new[] { Templates.Embeds.noWebDevices().Build() }); }
                 await RespondAsync($"```{Utils.ExtraGen.GetWebDevice()}```");
             }
             catch { await RespondAsync("", new[] { Templates.Embeds.ResourceUnavailable().Build() }); }

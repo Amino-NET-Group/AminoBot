@@ -1,4 +1,5 @@
 ﻿using Discord;
+using Discord.WebSocket;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
@@ -22,7 +23,8 @@ namespace AminoBot
         public static string clientPassword;
         public static string clientDevice;
 
-        public static string ID17Device;
+
+        public static List<string> webDevices = new List<string>();
 
         public static void CreateConfig()
         {
@@ -34,12 +36,12 @@ namespace AminoBot
                 json.Add("accountEmail", "");
                 json.Add("accountPassword", "");
                 json.Add("accountDeviceId", "");
-                json.Add("ID17Endpoint", "");
                 Directory.CreateDirectory("Aminobot");
                 using (StreamWriter sw = File.CreateText("AminoBot/config.json"))
                 {
                     sw.Write(json);
                 }
+                File.CreateText("Aminobot/webDevs.txt");
             }
         }
 
@@ -51,11 +53,53 @@ namespace AminoBot
             clientEmail = (string)JObject.Parse(data)["accountEmail"];
             clientPassword = (string)JObject.Parse(data)["accountPassword"];
             clientDevice = (string)JObject.Parse(data)["accountDeviceId"];
-            ID17Device = (string)JObject.Parse(data)["ID17Endpoint"];
+
+            webDevices = File.ReadAllLines("Aminobot/webDevs.txt").ToList();
         }
 
 
+        public static async void deviceFileCheck(SocketMessage msg)
+        {
+            int WDC = 0;
+            try
+            {
+                
+                if (msg.Author.IsBot) { return; }
+                if (msg.Author.IsWebhook) { return; }
+                if (msg.Channel.Id == Utils.logChannel)
+                {
+                    if (msg.Attachments.Count > 0)
+                    {
+                        if (msg.Attachments.First().ContentType.Contains("text/plain"))
+                        {
+                            WebClient WClient = new WebClient();
+                            WClient.DownloadFile(msg.Attachments.First().Url, "tempWebDevices.txt");
+                            WDC = File.ReadAllLines("tempWebDevices.txt").Length;
+                            foreach (string dev in File.ReadAllLines("tempWebDevices.txt")) { if (dev.StartsWith("17")) { webDevices.Add(dev.ToString()); } }
+                            File.Delete("tempWebDevices.txt");
+                            using (StreamWriter sw = File.CreateText("Aminobot/webDevs.txt"))
+                            {
+                                foreach (string device in webDevices)
+                                {
+                                    sw.WriteLine(device);
+                                }
+                            }
+                            try
+                            {
+                                ITextChannel channel = (ITextChannel)Program.client.GetChannel(Convert.ToUInt64(Utils.logChannel));
+                                await channel.SendMessageAsync("", false, Templates.Embeds.webDevicesAdded(WDC, webDevices.Count).Build());
+                            }
+                            catch { }
+                            try { msg.DeleteAsync(); } catch { }
+                        }
+                    }
+                }
 
+
+            }
+            catch { }
+
+        }
         public class ExtraGen
         {
             static T[] CombineTwoArrays<T>(T[] a1, T[] a2)
@@ -79,13 +123,41 @@ namespace AminoBot
             {
                 try
                 {
-                    WebClient WClient = new WebClient();
-                    string result = WClient.DownloadString(Utils.ID17Device);
-                    if(!result.StartsWith("17")) { throw new Exception(); }
-                    return result;
+                    Random rdm = new Random();
+                    string dev = webDevices[rdm.Next(webDevices.Count)];
+
+                    webDevices.Remove(dev);
+                    using (StreamWriter sw = File.CreateText("Aminobot/webDevs.txt"))
+                    {
+                        foreach(string device in webDevices)
+                        {
+                            sw.WriteLine(device);
+                        }
+                    }
+
+                    if(webDevices.Count < 100) { _ = Task.Run(async () => { warnCount(); }); }
+
+                    return dev;
                 }
                 catch { throw new Exception(); }
             }
+
+            public static void checkCount()
+            {
+                if (webDevices.Count < 100) { _ = Task.Run(async () => { warnCount(); }); }
+            }
+
+            private static async void warnCount()
+            {
+                try
+                {
+                    ITextChannel channel = (ITextChannel)Program.client.GetChannel(Convert.ToUInt64(Utils.logChannel));
+                    await channel.SendMessageAsync("", false, Templates.Embeds.webDeviceCountWarn(webDevices.Count).Build());
+                }
+                catch { }
+
+            }
+
 
 
             public static string deviceId(int prefixMode = 19)
