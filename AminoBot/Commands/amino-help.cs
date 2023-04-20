@@ -20,7 +20,8 @@ namespace AminoBot.Commands
                 $"**/device-extra** <prefix> - Allows you to generate a Device ID with a specific Prefix\n" +
                 $"**/verify** <deviceId> - Allows you to see if a device ID is valid or not\n" +
                 $"**/web-device** - Allows you to generate a prefix 17 Device ID\n " +
-                $"**/created-time** - Allows you to see the Date and Time a user has joined Amino";
+                $"**/created-time** <user URL> - Allows you to see the Date and Time a user has joined Amino\n" +
+                $"**/show-profile** <user URL> - Allows you to get information about someones public Profile";
         public static string aboutText = $"The AminoBot Project is a Discord Bot dedicated to being an Amino toolkit in the discord bot Format\n" +
                         $"The AminoBot Project is made in the C# Programming language and is powered by **Amino.NET**(*<https://github.com/FabioGaming/Amino.Net>*)\n" +
                         $"This bot has been developed and made possible by **FabioGaming#6914**(*1071594003717423134*)";
