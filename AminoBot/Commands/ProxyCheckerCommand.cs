@@ -20,7 +20,7 @@ namespace AminoBot.Commands
    {
         //MIGHT BE REMADE LATER ON
         //[SlashCommand("checkproxy", "Allows you to see if a proxy is valid for Amino or not")]
-        public async Task checkProxy(string proxy, [Choice("SOCKS5", "sock5"), Choice("SOCKS4", "sock4"), Choice("HTTPS", "https"), Choice("HTTP", "http")] string proxyType)
+        public async Task checkProxy(string proxy, [Choice("SOCKS5", "socks5"), Choice("SOCKS4", "socks4"), Choice("HTTPS", "https"), Choice("HTTP", "http")] string proxyType)
         {
             try
             {

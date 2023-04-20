@@ -19,7 +19,7 @@ namespace AminoBot.Events
             {
                 if(interaction.Type != Discord.InteractionType.MessageComponent)
                 {
-                    if (!Utils.CoolDown.isCooldown(interaction.User.Id)) { await Utils.CoolDown.addUser(interaction.User.Id); } else { await interaction.RespondAsync("", new[] { Templates.Embeds.TimeOutEmbed(Utils.CoolDown.getTimeoutSeconds(interaction.User.Id)).Build() }); }
+                    if (!Utils.CoolDown.isCooldown(interaction.User.Id)) { await Utils.CoolDown.addUser(interaction.User.Id); } else { await interaction.RespondAsync("", new[] { Templates.Embeds.TimeOutEmbed(Utils.CoolDown.getTimeoutSeconds(interaction.User.Id)).Build() }, ephemeral: true); }
                 }
 
                 // Create an execution context that matches the generic type parameter of your InteractionModuleBase<T> modules.

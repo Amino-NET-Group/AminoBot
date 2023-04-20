@@ -12,6 +12,7 @@ namespace AminoBot.Commands
         [SlashCommand("device", "Generates a basic Amino-Device-ID")]
         public async Task device()
         {
+            await Utils.CoolDown.removeUser(Context.User.Id);
             await RespondAsync($"```\n{Amino.helpers.generate_device_id()}```");
         }
     }
