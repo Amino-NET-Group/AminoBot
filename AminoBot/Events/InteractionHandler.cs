@@ -17,6 +17,9 @@ namespace AminoBot.Events
         {
             try
             {
+                
+
+                Console.WriteLine($"Recevied Interaction: " + interaction.Id);
                 if(interaction.Type != Discord.InteractionType.MessageComponent)
                 {
                     if (!Utils.CoolDown.isCooldown(interaction.User.Id)) { await Utils.CoolDown.addUser(interaction.User.Id); } else { await interaction.RespondAsync("", new[] { Templates.Embeds.TimeOutEmbed(Utils.CoolDown.getTimeoutSeconds(interaction.User.Id)).Build() }, ephemeral: true); }
@@ -27,6 +30,7 @@ namespace AminoBot.Events
 
                 // Execute the incoming command.
                 var result = await Program._interactionService.ExecuteCommandAsync(context, Program._services);
+                
             }
             catch { }
         }

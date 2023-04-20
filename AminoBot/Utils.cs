@@ -228,14 +228,13 @@ namespace AminoBot
                     
                 });
             }
-            public static Task removeUser(ulong userId)
+            public static async Task removeUser(ulong userId)
             {
                 _ = Task.Run(async () =>
                 {
-                    await Task.Delay(2000);
+                    await Task.Delay(1000);
                     if (timeOutList.ContainsKey(userId)) { timeOutList.Remove(userId); }
                 });
-                return Task.CompletedTask;
             }
 
 
