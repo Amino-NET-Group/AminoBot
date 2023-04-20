@@ -26,7 +26,7 @@ namespace AminoBot.Commands
                 if(AMProfile.iconUrl != null) { profile.ThumbnailUrl = AMProfile.iconUrl; }
                 
                 profile.Title = $"Profile Info of: {AMProfile.nickname}";
-                profile.Description = $"**Overview**" +
+                string desc = $"**Overview**" +
                     $"\nAminoId: @{AMProfile.aminoId}" +
                     $"\nUserId: {AMProfile.userId}" +
                     $"\nUsername: {AMProfile.nickname}" +
@@ -36,6 +36,8 @@ namespace AminoBot.Commands
                     $"\nPublicUrl: [{contentBase.shareURLShortCode}]({contentBase.shareURLShortCode})" +
                     $"\nAccount Created at: {AMProfile.createdTime}" +
                     $"\nAccount Last Modified at: {AMProfile.modifiedTime}";
+                if(AMProfile.iconUrl != null) { desc = desc + $"\nIconUrl: [{AMProfile.iconUrl}]({AMProfile.iconUrl})"; }
+                profile.Description = desc;
                 string _desc = AMProfile.content;
                 if(_desc.Length > 1024) { _desc = _desc.Substring(0, 1020); _desc = _desc + "..."; }
                 if(_desc == null) { _desc = "*No Profile Description Available.*"; }
