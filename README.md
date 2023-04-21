@@ -18,5 +18,5 @@
 - /show-profile - Allows you to see someones Public Profile wrapped up in an Embed
 ### Extras:
 - The bot has a 30 second timeout after every command, this is to prevent spam or any Amino API errors like "Too many requests" or "403 Forbidden"
-- If you want to invite the bot you can do it *[HERE](https://discord.com/api/oauth2/authorize?client_id=1068683105189253200&permissions=277025442816&scope=bot%20applications.commands)*
+- If you want to invite the bot you can do it *[HERE](https://discord.com/api/oauth2/authorize?client_id=1071604400029716500&permissions=277025442816&scope=bot%20applications.commands)*
 
