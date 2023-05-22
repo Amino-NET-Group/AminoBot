@@ -5,11 +5,11 @@
     <TargetFramework>net7.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
-    <Version>1.4.0</Version>
+    <Version>1.4.1</Version>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Amino.NET" Version="1.2.0-Dev-7.1.2.7.9.9" />
+    <PackageReference Include="Amino.NET" Version="1.4.0" />
     <PackageReference Include="Discord.Net" Version="3.9.0" />
     <PackageReference Include="Microsoft.Extensions.Configuration.Abstractions" Version="7.0.0" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="7.0.0" />
