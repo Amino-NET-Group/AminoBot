@@ -18,7 +18,7 @@ namespace AminoBot.Commands
                 string objectId = client.get_from_code(URL).objectId;
                 if (objectId != null)
                 {
-                    await RespondAsync($"```Base: {URL}\nResult: {objectId}```");
+                    await RespondAsync("", new Discord.Embed[] { Templates.Embeds.ResponseTemplate(URL, objectId).Build() });
                 }
                 else
                 {

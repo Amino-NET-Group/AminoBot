@@ -19,7 +19,6 @@ namespace AminoBot.Events
             {
                 
 
-                Console.WriteLine($"Recevied Interaction: " + interaction.Id);
                 if(interaction.Type != Discord.InteractionType.MessageComponent)
                 {
                     if (!Utils.CoolDown.isCooldown(interaction.User.Id)) { await Utils.CoolDown.addUser(interaction.User.Id); } else { await interaction.RespondAsync("", new[] { Templates.Embeds.TimeOutEmbed(Utils.CoolDown.getTimeoutSeconds(interaction.User.Id)).Build() }, ephemeral: true); }

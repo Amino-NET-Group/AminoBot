@@ -17,11 +17,11 @@ namespace AminoBot.Commands
 
                 Amino.Client client = Utils.mainClient;
                 string _profileBase = input;
-                if (input.StartsWith("http")) { _profileBase = client.get_from_code(input).objectId; Console.WriteLine("Hit: " + _profileBase); }
+                if (input.StartsWith("http")) { _profileBase = client.get_from_code(input).objectId; }
                 string profileBase = client.get_from_id(_profileBase, Amino.Types.Object_Types.User).shareURLShortCode;
                 if (profileBase != null)
                 {
-                    await RespondAsync($"```Base: {input}\nResult: {profileBase}```");
+                    await RespondAsync("", new Discord.Embed[] { Templates.Embeds.ResponseTemplate(input, profileBase).Build() });
                 }
                 else { await RespondAsync("", new[] { Templates.Embeds.RequestError().Build() }); }
             }

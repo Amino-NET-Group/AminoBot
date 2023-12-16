@@ -18,7 +18,7 @@ namespace AminoBot.Commands
                 string _user;
                 if(userUrl.StartsWith("http")) { _user = client.get_from_code(userUrl).objectId; } else { _user = userUrl; }
                 var user = client.get_user_info(_user);
-                await RespondAsync($"```Base: {userUrl}\nResult: {user.createdTime}```");
+                await RespondAsync("", new Discord.Embed[] { Templates.Embeds.ResponseTemplate(userUrl, user.createdTime).Build() });
             } catch { await RespondAsync("", new[] { Templates.Embeds.RequestError().Build() }); }
         }
     }

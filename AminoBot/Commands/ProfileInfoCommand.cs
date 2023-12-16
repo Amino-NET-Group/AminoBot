@@ -26,18 +26,20 @@ namespace AminoBot.Commands
                 if(AMProfile.iconUrl != null) { profile.ThumbnailUrl = AMProfile.iconUrl; }
                 
                 profile.Title = $"Profile Info of: {AMProfile.nickname}";
-                string desc = $"**Overview**" +
+                string desc =
                     $"\nAminoId: @{AMProfile.aminoId}" +
                     $"\nUserId: {AMProfile.userId}" +
                     $"\nUsername: {AMProfile.nickname}" +
                     $"\nFollower Count: {AMProfile.memberCount}" +
                     $"\nFollowing Count: {AMProfile.joinedCount}" +
                     $"\nWallcomments Count: {AMProfile.commentsCount}" +
-                    $"\nPublicUrl: [{contentBase.shareURLShortCode}]({contentBase.shareURLShortCode})" +
+                    $"\nPublicUrl: [{contentBase.shareURLShortCode.Replace("http://", String.Empty)}]({contentBase.shareURLShortCode})" +
                     $"\nAccount Created at: {AMProfile.createdTime}" +
                     $"\nAccount Last Modified at: {AMProfile.modifiedTime}";
-                if(AMProfile.iconUrl != null) { desc = desc + $"\nIconUrl: [{AMProfile.iconUrl}]({AMProfile.iconUrl})"; }
-                profile.Description = desc;
+
+                if(AMProfile.iconUrl != null) { desc = desc + $"\nIconUrl: [{AMProfile.iconUrl.Replace("http://", String.Empty)}]({AMProfile.iconUrl})"; }
+                profile.AddField("Overview", desc);
+                //profile.Description = desc;
                 string _desc = AMProfile.content;
                 if(_desc.Length > 1024) { _desc = _desc.Substring(0, 1020); _desc = _desc + "..."; }
                 if(_desc == null) { _desc = "*No Profile Description Available.*"; }

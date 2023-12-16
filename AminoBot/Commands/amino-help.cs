@@ -24,7 +24,7 @@ namespace AminoBot.Commands
                 $"**</show-profile:{Program.client.CurrentUser.Id}>** <user URL> - Allows you to get information about someones public Profile";
         public static string aboutText = $"The AminoBot Project is a Discord Bot dedicated to being an Amino toolkit in the discord bot Format\n" +
                         $"The AminoBot Project is made in the C# Programming language and is powered by **Amino.NET**(*<https://github.com/FabioGaming/Amino.Net>*)\n" +
-                        $"This bot has been developed and made possible by **FabioGaming#6914**(*1071594003717423134*)";
+                        $"This bot has been developed and made possible by **@fabiogaming**(*1071594003717423134*)";
 
 
         [SlashCommand("amino-help", "See a list of commands and info about this bot!")]

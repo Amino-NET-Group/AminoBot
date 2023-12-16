@@ -21,7 +21,7 @@ namespace AminoBot.Commands
                 if(_communityBase.Community != null) { comId = _communityBase.Community.communityId.ToString(); } else { comId = _communityBase.communityId.ToString(); }
                 if(comId != null)
                 {
-                    await RespondAsync($"```Base: {URL}\nResult: {comId}```");
+                    await RespondAsync("", new Discord.Embed[] { Templates.Embeds.ResponseTemplate(URL, comId).Build() });
                 } else { await RespondAsync("", new[] { Templates.Embeds.RequestError().Build() }); }
             }catch { await RespondAsync("", new[] { Templates.Embeds.RequestError().Build() }); }
         }

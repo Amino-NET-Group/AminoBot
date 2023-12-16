@@ -10,6 +10,20 @@ namespace AminoBot.Templates
 {
     public class Embeds
     {
+        public static EmbedBuilder ResponseTemplate(string input, string output)
+        {
+            EmbedBuilder embed = new EmbedBuilder();
+            embed.Color = Color.Blue;
+            embed.AddField("Base", input);
+            embed.AddField("Result", output);
+            embed.Footer = new EmbedFooterBuilder()
+            {
+                Text = "Thank you for using AminoBot"
+            };
+            return embed;
+        }
+
+
         public static EmbedBuilder JoinedServer(SocketGuild guild)
         {
             EmbedBuilder embed = new EmbedBuilder();
