@@ -54,6 +54,7 @@ namespace AminoBot.Commands
             InfoButton.Label = "About";
             InfoButton.CustomId = "amino-help-about";
 
+
             var msgcomponents = new ComponentBuilder().WithButton(helpButton).WithButton(InfoButton);
 
             await RespondAsync("", embeds: new[] { response.Build() }, components: msgcomponents.Build());

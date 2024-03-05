@@ -34,10 +34,9 @@ namespace AminoBot
 
             var socketConfig = new DiscordSocketConfig
             {
-                GatewayIntents = GatewayIntents.AllUnprivileged | GatewayIntents.GuildMembers | GatewayIntents.MessageContent,
+                GatewayIntents = GatewayIntents.AllUnprivileged | GatewayIntents.MessageContent,
                 LogLevel = LogSeverity.Error,
-                UseInteractionSnowflakeDate = false,
-                AlwaysDownloadUsers = true
+                UseInteractionSnowflakeDate = false
             };
 
             client = new DiscordSocketClient(socketConfig);
