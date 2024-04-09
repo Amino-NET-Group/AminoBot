@@ -13,7 +13,7 @@ namespace AminoBot.Commands
         public async Task device()
         {
             Utils.CoolDown.removeUser(Context.User.Id);
-            await RespondAsync($"```\n{Amino.helpers.generate_device_id()}```");
+            await RespondAsync("", new[] { Templates.Embeds.ResponseEmbed(Amino.helpers.generate_device_id()).Build() });
         }
     }
 }
