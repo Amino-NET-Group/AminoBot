@@ -16,7 +16,6 @@ namespace AminoBot.Commands
             try
             {
                 bool isValid = client.check_device(deviceId);
-                await RespondAsync($"```Base: {deviceId}\nIs Valid: {isValid}```");
                 await RespondAsync("", new Discord.Embed[] { Templates.Embeds.ResponseTemplate(deviceId, isValid.ToString()).Build() });
             }catch { await RespondAsync("", new[] { Templates.Embeds.RequestError().Build() }); }
         }
