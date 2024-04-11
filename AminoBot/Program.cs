@@ -1,10 +1,7 @@
-﻿using AminoBot.Events;
-using Discord;
+﻿using Discord;
 using Discord.Interactions;
 using Discord.WebSocket;
-using Microsoft.CSharp;
 using Microsoft.Extensions.DependencyInjection;
-using System.CodeDom.Compiler;
 using System.Reflection;
 
 namespace AminoBot
