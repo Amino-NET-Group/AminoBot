@@ -18,6 +18,17 @@ namespace AminoBot.Templates
             return embed;
         }
 
+        public static EmbedBuilder ResponseEmbed(string input)
+        {
+            EmbedBuilder embed = new EmbedBuilder();
+            embed.Color = Color.Blue;
+            embed.AddField("Result", input);
+            embed.Footer = new EmbedFooterBuilder()
+            {
+                Text = "Thank you for using AminoBot"
+            };
+            return embed;
+        }
 
         public static EmbedBuilder JoinedServer(SocketGuild guild)
         {
