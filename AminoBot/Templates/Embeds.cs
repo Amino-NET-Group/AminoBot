@@ -1,10 +1,5 @@
 ﻿using Discord;
 using Discord.WebSocket;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace AminoBot.Templates
 {
@@ -23,6 +18,17 @@ namespace AminoBot.Templates
             return embed;
         }
 
+        public static EmbedBuilder ResponseEmbed(string input)
+        {
+            EmbedBuilder embed = new EmbedBuilder();
+            embed.Color = Color.Blue;
+            embed.AddField("Result", input);
+            embed.Footer = new EmbedFooterBuilder()
+            {
+                Text = "Thank you for using AminoBot"
+            };
+            return embed;
+        }
 
         public static EmbedBuilder JoinedServer(SocketGuild guild)
         {

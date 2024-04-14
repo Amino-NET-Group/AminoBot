@@ -1,11 +1,5 @@
-﻿using AminoBot.Commands;
-using Discord;
+﻿using Discord;
 using Discord.WebSocket;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace AminoBot.Events
 {
@@ -25,7 +19,7 @@ namespace AminoBot.Events
                     
                     response.Color = Color.Blue;
                     response.Title = "AminoBot Help";
-                    response.Description = amino_help.helpText;
+                    response.Description = Utils.helpText;
                     response.Footer = new EmbedFooterBuilder()
                     {
                         Text = "Thank you for using AminoBot"
@@ -49,7 +43,7 @@ namespace AminoBot.Events
                     response = new EmbedBuilder();
                     response.Color = Color.Blue;
                     response.Title = "AminoBot About";
-                    response.Description = amino_help.aboutText;
+                    response.Description = Utils.aboutText;
                     response.Footer = new EmbedFooterBuilder()
                     {
                         Text = "Thank you for using AminoBot"
