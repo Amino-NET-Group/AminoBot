@@ -82,7 +82,6 @@ namespace AminoBot
 
                 if (AMProfile.iconUrl != null) { desc = desc + $"\nIconUrl: [{AMProfile.iconUrl.Replace("http://", String.Empty)}]({AMProfile.iconUrl})"; }
                 profile.AddField("Overview", desc);
-                //profile.Description = desc;
                 string _desc = AMProfile.content;
                 if (_desc.Length > 1024) { _desc = _desc.Substring(0, 1020); _desc = _desc + "..."; }
                 if (_desc == null) { _desc = "*No Profile Description Available.*"; }
@@ -158,6 +157,57 @@ namespace AminoBot
             }
             catch { await FollowupAsync("", new[] { Templates.Embeds.RequestError().Build() }); }
         }
+
+        [SlashCommand("show-community", "Allows you to see information about a community")]
+        public async Task ShowCommunity(string communityUrl)
+        {
+            await DeferAsync();
+            try
+            {
+                Amino.Client client = new Amino.Client();
+                string _comId = communityUrl.StartsWith("http") ? client.get_from_code(communityUrl).communityId.ToString() : communityUrl; 
+
+                var communityBase = client.get_community_info(_comId);
+
+                EmbedBuilder community = new EmbedBuilder();
+                community.Color = Color.Teal;
+                if(communityBase.iconUrl != null) { community.ThumbnailUrl = communityBase.iconUrl; }
+                community.Title = $"Community info of {communityBase.name}";
+
+
+                string desc =
+                    $"CommunityId: {communityBase.communityId}" +
+                    $"Activity: {communityBase.communityHeat}" +
+                    $"Created Time: {communityBase.createdTime}" +
+                    $"Last Modified: {communityBase.modifiedTime}" +
+                    $"Last Updated: {communityBase.updatedTime}" +
+                    $"Staff Count: {communityBase.communityHeadList.Count}" +
+                    $"Member Count: {communityBase.membersCount}" +
+                    $"Join Type: {communityBase.joinType}" +
+                    $"Link: {communityBase.link}" +
+                    $"Endpoint: {communityBase.endpoint}" +
+                    $"Keywords: {communityBase.keywords}" +
+                    $"Searchable: {communityBase.searchable}" +
+                    $"Primary Language: {communityBase.primaryLanguage}" +
+                    $"Tagline: {communityBase.tagline}" +
+                    $"IconUrl: [{communityBase.iconUrl.Replace("http://", string.Empty)}]({communityBase.iconUrl})";
+
+                community.Description = desc;
+                
+                if(communityBase.content != null)
+                {
+                    string _content = communityBase.content.Length > 1024 ? communityBase.content.Substring(0, 1020) + "..." : communityBase.content;
+                    community.AddField("Description", _content);
+                }
+                if(communityBase.Agent != null)
+                {
+                    // CONTINUE WITH AGENT INFO
+                }
+                
+            }
+            catch { await FollowupAsync("", new[] { Templates.Embeds.RequestError().Build() }); }
+        }
+
 
         [SlashCommand("amino-help", "See a list of commands and info about this bot!")]
         public async Task help()
