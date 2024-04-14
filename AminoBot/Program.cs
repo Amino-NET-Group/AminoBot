@@ -61,7 +61,7 @@ namespace AminoBot
             client.MessageReceived += events.onMsg;
             //Events end here
 
-
+            Utils.InitText();
             Console.WriteLine("Ready");
             await Task.Delay(-1);
 

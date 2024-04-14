@@ -1,5 +1,6 @@
 ﻿using Discord;
 using Discord.Interactions;
+using System.Runtime.InteropServices;
 
 namespace AminoBot
 {
@@ -8,31 +9,33 @@ namespace AminoBot
         [SlashCommand("web-device", "Allows you to generate a prefix 17 device ID")]
         public async Task GetWebDevice()
         {
+            await DeferAsync();
             try
             {
                 Utils.ExtraGen.checkCount();
                 if (Utils.webDevices.Count == 0) { await RespondAsync("", new[] { Templates.Embeds.noWebDevices().Build() }); }
-                await RespondAsync($"```{Utils.ExtraGen.GetWebDevice()}```");
+                await FollowupAsync("", new[] { Templates.Embeds.ResponseEmbed(Utils.ExtraGen.GetWebDevice()).Build() });
             }
-            catch { await RespondAsync("", new[] { Templates.Embeds.ResourceUnavailable().Build() }); }
+            catch { await FollowupAsync("", new[] { Templates.Embeds.ResourceUnavailable().Build() }); }
         }
 
         [SlashCommand("verify", "Check if a device ID is valid or not")]
         public async Task checkDevice(string deviceId)
         {
+            await DeferAsync();
             Amino.Client client = new Amino.Client();
             try
             {
                 bool isValid = client.check_device(deviceId);
-                await RespondAsync($"```Base: {deviceId}\nIs Valid: {isValid}```");
-                await RespondAsync("", new Discord.Embed[] { Templates.Embeds.ResponseTemplate(deviceId, isValid.ToString()).Build() });
+                await FollowupAsync("", new Discord.Embed[] { Templates.Embeds.ResponseTemplate(deviceId, isValid.ToString()).Build() });
             }
-            catch { await RespondAsync("", new[] { Templates.Embeds.RequestError().Build() }); }
+            catch { await FollowupAsync("", new[] { Templates.Embeds.RequestError().Build() }); }
         }
 
         [SlashCommand("public-url", "Allows you to get someones public profile from community Profile URL or objectId")]
         public async Task GetPublicUser(string input)
         {
+            await DeferAsync();
             try
             {
 
@@ -42,16 +45,17 @@ namespace AminoBot
                 string profileBase = client.get_from_id(_profileBase, Amino.Types.Object_Types.User).shareURLShortCode;
                 if (profileBase != null)
                 {
-                    await RespondAsync("", new Discord.Embed[] { Templates.Embeds.ResponseTemplate(input, profileBase).Build() });
+                    await FollowupAsync("", new Discord.Embed[] { Templates.Embeds.ResponseTemplate(input, profileBase).Build() });
                 }
-                else { await RespondAsync("", new[] { Templates.Embeds.RequestError().Build() }); }
+                else { await FollowupAsync("", new[] { Templates.Embeds.RequestError().Build() }); }
             }
-            catch { await RespondAsync("", new[] { Templates.Embeds.RequestError().Build() }); }
+            catch { await FollowupAsync("", new[] { Templates.Embeds.RequestError().Build() }); }
         }
 
         [SlashCommand("show-profile", "Returns public user info in an Embed")]
         public async Task getProfile(string user)
         {
+            await DeferAsync();
             try
             {
                 string profileBase = user;
@@ -84,54 +88,54 @@ namespace AminoBot
                 if (_desc == null) { _desc = "*No Profile Description Available.*"; }
                 profile.AddField("Profile Description", $"{_desc}");
 
-                await RespondAsync("", new[] { profile.Build() });
+                await FollowupAsync("", new[] { profile.Build() });
             }
-            catch (Exception e) { await RespondAsync("", new[] { Templates.Embeds.RequestError().Build() }); }
+            catch (Exception e) { await FollowupAsync("", new[] { Templates.Embeds.RequestError().Build() }); }
         }
 
         [SlashCommand("objectid", "Allows you to get an Object ID from an Amino URL")]
         public async Task getObjectId(string URL)
         {
+            await DeferAsync();
             try
             {
                 Amino.Client client = new Amino.Client();
                 string objectId = client.get_from_code(URL).objectId;
                 if (objectId != null)
                 {
-                    await RespondAsync("", new Discord.Embed[] { Templates.Embeds.ResponseTemplate(URL, objectId).Build() });
+                    await FollowupAsync("", new Discord.Embed[] { Templates.Embeds.ResponseTemplate(URL, objectId).Build() });
                 }
                 else
                 {
-                    await RespondAsync("", new[] { Templates.Embeds.RequestError().Build() });
+                    await FollowupAsync("", new[] { Templates.Embeds.RequestError().Build() });
                 }
             }
-            catch { await RespondAsync("", new[] { Templates.Embeds.RequestError().Build() }); }
+            catch { await FollowupAsync("", new[] { Templates.Embeds.RequestError().Build() }); }
         }
 
         [SlashCommand("device-extra", "Allows you to generate device IDs from a list of prefixes")]
         public async Task extraDeviceGen([Choice("18", 18), Choice("19", 19), Choice("22", 22), Choice("32", 32), Choice("42", 42), Choice("52", 52)] int prefix)
         {
-            Utils.CoolDown.removeUser(Context.User.Id);
-            await RespondAsync($"```\n{Utils.ExtraGen.deviceId(prefix).ToUpper()}```");
+            await RespondAsync("", new[] { Templates.Embeds.ResponseEmbed(Utils.ExtraGen.deviceId(prefix).ToUpper()).Build() });
         }
 
         [SlashCommand("device", "Generates a basic Amino-Device-ID")]
         public async Task device()
         {
-            Utils.CoolDown.removeUser(Context.User.Id);
-            await RespondAsync($"```\n{Amino.helpers.generate_device_id()}```");
+            await RespondAsync("", new[] { Templates.Embeds.ResponseEmbed(Amino.helpers.generate_device_id()).Build() });
         }
 
         [SlashCommand("created-time", "Allows you to see when a user joined Amino")]
         public async Task createdTime(string userUrl)
         {
+            await DeferAsync();
             try
             {
                 Amino.Client client = new Amino.Client();
                 string _user;
                 if (userUrl.StartsWith("http")) { _user = client.get_from_code(userUrl).objectId; } else { _user = userUrl; }
                 var user = client.get_user_info(_user);
-                await RespondAsync("", new Discord.Embed[] { Templates.Embeds.ResponseTemplate(userUrl, user.createdTime).Build() });
+                await FollowupAsync("", new Discord.Embed[] { Templates.Embeds.ResponseTemplate(userUrl, user.createdTime).Build() });
             }
             catch { await RespondAsync("", new[] { Templates.Embeds.RequestError().Build() }); }
         }
@@ -139,6 +143,7 @@ namespace AminoBot
         [SlashCommand("communityid", "Allows you to get the Community ID from a Community URL or post, chat or user URL within a community")]
         public async Task getCommunityId(string URL)
         {
+            await DeferAsync();
             try
             {
                 Amino.Client client = new Amino.Client();
@@ -147,11 +152,11 @@ namespace AminoBot
                 if (_communityBase.Community != null) { comId = _communityBase.Community.communityId.ToString(); } else { comId = _communityBase.communityId.ToString(); }
                 if (comId != null)
                 {
-                    await RespondAsync("", new Discord.Embed[] { Templates.Embeds.ResponseTemplate(URL, comId).Build() });
+                    await FollowupAsync("", new Discord.Embed[] { Templates.Embeds.ResponseTemplate(URL, comId).Build() });
                 }
-                else { await RespondAsync("", new[] { Templates.Embeds.RequestError().Build() }); }
+                else { await FollowupAsync("", new[] { Templates.Embeds.RequestError().Build() }); }
             }
-            catch { await RespondAsync("", new[] { Templates.Embeds.RequestError().Build() }); }
+            catch { await FollowupAsync("", new[] { Templates.Embeds.RequestError().Build() }); }
         }
 
         [SlashCommand("amino-help", "See a list of commands and info about this bot!")]
