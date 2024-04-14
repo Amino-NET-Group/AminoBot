@@ -82,7 +82,6 @@ namespace AminoBot
 
                 if (AMProfile.iconUrl != null) { desc = desc + $"\nIconUrl: [{AMProfile.iconUrl.Replace("http://", String.Empty)}]({AMProfile.iconUrl})"; }
                 profile.AddField("Overview", desc);
-                //profile.Description = desc;
                 string _desc = AMProfile.content;
                 if (_desc.Length > 1024) { _desc = _desc.Substring(0, 1020); _desc = _desc + "..."; }
                 if (_desc == null) { _desc = "*No Profile Description Available.*"; }
@@ -158,6 +157,67 @@ namespace AminoBot
             }
             catch { await FollowupAsync("", new[] { Templates.Embeds.RequestError().Build() }); }
         }
+
+        [SlashCommand("show-community", "Allows you to see information about a community")]
+        public async Task ShowCommunity(string communityUrl)
+        {
+            await DeferAsync();
+            try
+            {
+                Amino.Client client = new Amino.Client();
+                string _comId = communityUrl.StartsWith("http") ? client.get_from_code(communityUrl).communityId.ToString() : communityUrl; 
+
+                var communityBase = client.get_community_info(_comId);
+
+                EmbedBuilder community = new EmbedBuilder();
+                community.Color = Color.Teal;
+                if(communityBase.iconUrl != null) { community.ThumbnailUrl = communityBase.iconUrl; }
+                community.Title = $"Community info of {communityBase.name}";
+
+
+                string desc =
+                    $"\nCommunityId: {communityBase.communityId}" +
+                    $"\nActivity: {communityBase.communityHeat}" +
+                    $"\nCreated Time: {communityBase.createdTime}" +
+                    $"\nLast Modified: {communityBase.modifiedTime}" +
+                    $"\nLast Updated: {communityBase.updatedTime}" +
+                    $"\nStaff Count: {communityBase.communityHeadList.Count}" +
+                    $"\nMember Count: {communityBase.membersCount}" +
+                    $"\nJoin Type: {communityBase.joinType}" +
+                    $"\nLink: {communityBase.link}" +
+                    $"\nEndpoint: {communityBase.endpoint}" +
+                    $"\nKeywords: {communityBase.keywords}" +
+                    $"\nSearchable: {communityBase.searchable}" +
+                    $"\nPrimary Language: {communityBase.primaryLanguage}" +
+                    $"\nTagline: {communityBase.tagline}" +
+                    $"\nIconUrl: [{communityBase.iconUrl.Replace("http://", string.Empty)}]({communityBase.iconUrl})";
+
+                community.Description = desc;
+                
+                if(communityBase.content != null)
+                {
+                    string _content = communityBase.content.Length > 1024 ? communityBase.content.Substring(0, 1020) + "..." : communityBase.content;
+                    community.AddField("Description", _content);
+                }
+                if(communityBase.Agent != null)
+                {
+                    var agent = communityBase.Agent;
+                    string _desc =
+                        $"\nNickname: {agent.nickname}" +
+                        $"\nUserId: {agent.userId}" +
+                        $"\nFollower Count: {agent.membersCount}" +
+                        $"\nReputation: {agent.reputation}" +
+                        $"\nLevel: {agent.level}" +
+                        $"\nIcon URL: [{agent.iconUrl.Replace("http://", string.Empty)}]({agent.iconUrl})";
+                    community.AddField("Agent Info", _desc);
+                }
+
+                await FollowupAsync("", new[] { community.Build() });
+                
+            }
+            catch { await FollowupAsync("", new[] { Templates.Embeds.RequestError().Build() }); }
+        }
+
 
         [SlashCommand("amino-help", "See a list of commands and info about this bot!")]
         public async Task help()
