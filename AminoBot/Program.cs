@@ -61,7 +61,7 @@ namespace AminoBot
             client.MessageReceived += events.onMsg;
             //Events end here
 
-            Utils.InitText();
+
             Console.WriteLine("Ready");
             await Task.Delay(-1);
 
@@ -99,6 +99,7 @@ namespace AminoBot
             {
                 await _interactionService.RegisterCommandsGloballyAsync(true);
                 Console.WriteLine("Commands Registered!");
+                Utils.InitText();
 
                 _ = Task.Run(async () => updatePresence());
             }

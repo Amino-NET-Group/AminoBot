@@ -176,21 +176,21 @@ namespace AminoBot
 
 
                 string desc =
-                    $"CommunityId: {communityBase.communityId}" +
-                    $"Activity: {communityBase.communityHeat}" +
-                    $"Created Time: {communityBase.createdTime}" +
-                    $"Last Modified: {communityBase.modifiedTime}" +
-                    $"Last Updated: {communityBase.updatedTime}" +
-                    $"Staff Count: {communityBase.communityHeadList.Count}" +
-                    $"Member Count: {communityBase.membersCount}" +
-                    $"Join Type: {communityBase.joinType}" +
-                    $"Link: {communityBase.link}" +
-                    $"Endpoint: {communityBase.endpoint}" +
-                    $"Keywords: {communityBase.keywords}" +
-                    $"Searchable: {communityBase.searchable}" +
-                    $"Primary Language: {communityBase.primaryLanguage}" +
-                    $"Tagline: {communityBase.tagline}" +
-                    $"IconUrl: [{communityBase.iconUrl.Replace("http://", string.Empty)}]({communityBase.iconUrl})";
+                    $"\nCommunityId: {communityBase.communityId}" +
+                    $"\nActivity: {communityBase.communityHeat}" +
+                    $"\nCreated Time: {communityBase.createdTime}" +
+                    $"\nLast Modified: {communityBase.modifiedTime}" +
+                    $"\nLast Updated: {communityBase.updatedTime}" +
+                    $"\nStaff Count: {communityBase.communityHeadList.Count}" +
+                    $"\nMember Count: {communityBase.membersCount}" +
+                    $"\nJoin Type: {communityBase.joinType}" +
+                    $"\nLink: {communityBase.link}" +
+                    $"\nEndpoint: {communityBase.endpoint}" +
+                    $"\nKeywords: {communityBase.keywords}" +
+                    $"\nSearchable: {communityBase.searchable}" +
+                    $"\nPrimary Language: {communityBase.primaryLanguage}" +
+                    $"\nTagline: {communityBase.tagline}" +
+                    $"\nIconUrl: [{communityBase.iconUrl.Replace("http://", string.Empty)}]({communityBase.iconUrl})";
 
                 community.Description = desc;
                 
@@ -201,8 +201,18 @@ namespace AminoBot
                 }
                 if(communityBase.Agent != null)
                 {
-                    // CONTINUE WITH AGENT INFO
+                    var agent = communityBase.Agent;
+                    string _desc =
+                        $"\nNickname: {agent.nickname}" +
+                        $"\nUserId: {agent.userId}" +
+                        $"\nFollower Count: {agent.membersCount}" +
+                        $"\nReputation: {agent.reputation}" +
+                        $"\nLevel: {agent.level}" +
+                        $"\nIcon URL: [{agent.iconUrl.Replace("http://", string.Empty)}]({agent.iconUrl})";
+                    community.AddField("Agent Info", _desc);
                 }
+
+                await FollowupAsync("", new[] { community.Build() });
                 
             }
             catch { await FollowupAsync("", new[] { Templates.Embeds.RequestError().Build() }); }
