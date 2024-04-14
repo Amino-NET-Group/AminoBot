@@ -40,7 +40,8 @@ namespace AminoBot
                         $"**</verify:{Program.client.CurrentUser.Id}>** <deviceId> - Allows you to see if a device ID is valid or not\n" +
                         $"**</web-device:{Program.client.CurrentUser.Id}>** - Allows you to generate a prefix 17 Device ID\n " +
                         $"**</created-time:{Program.client.CurrentUser.Id}>** <user URL> - Allows you to see the Date and Time a user has joined Amino\n" +
-                        $"**</show-profile:{Program.client.CurrentUser.Id}>** <user URL> - Allows you to get information about someones public Profile";
+                        $"**</show-profile:{Program.client.CurrentUser.Id}>** <user URL> - Allows you to get information about someones public Profile\n" +
+                        $"**</show-community:{Program.client.CurrentUser.Id}>** <comUrl | comId | url> - Allows you to get information about a Community and its agent";
 
         }
 
