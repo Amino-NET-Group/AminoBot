@@ -136,7 +136,7 @@ namespace AminoBot
                 var user = client.get_user_info(_user);
                 await FollowupAsync("", new Discord.Embed[] { Templates.Embeds.ResponseTemplate(userUrl, user.createdTime).Build() });
             }
-            catch { await RespondAsync("", new[] { Templates.Embeds.RequestError().Build() }); }
+            catch { await FollowupAsync("", new[] { Templates.Embeds.RequestError().Build() }); }
         }
 
         [SlashCommand("communityid", "Allows you to get the Community ID from a Community URL or post, chat or user URL within a community")]
