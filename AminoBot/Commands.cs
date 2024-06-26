@@ -230,7 +230,7 @@ namespace AminoBot
             {
                 Text = "Thank you for using AminoBot"
             };
-            response.AddField("Links", "[GitHub](https://github.com/FabioGaming/AminoBot)\n[Amino.NET Server](https://discord.com/invite/qyv8P2gegK)\n[Amino.NET GitHub](https://github.com/FabioGaming/Amino.Net)");
+            response.AddField("Links", "[GitHub](https://github.com/Amino-NET-Group/AminoBot)\n[Amino.NET Server](https://discord.gg/2WjekrvArr)\n[Amino.NET GitHub](https://github.com/Amino-NET-Group/Amino.Net)");
 
 
 
