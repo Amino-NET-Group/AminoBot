@@ -3,6 +3,7 @@ using Discord.Interactions;
 using Discord.WebSocket;
 using Microsoft.Extensions.DependencyInjection;
 using System.Reflection;
+using System.Timers;
 
 namespace AminoBot
 {
@@ -11,22 +12,18 @@ namespace AminoBot
         public static ServiceProvider _services;
         public static InteractionService _interactionService;
         public static DiscordSocketClient client;
-        
 
+        private static Amino.Client? _aminoClient = null;
         static async Task Main(string[] args)
         {
-
+            Utils _utils = new Utils();
 
             Console.WriteLine("Starting Bot...");
-            Utils.CreateConfig();
-            Utils.ReadConfig();
-            if (Utils.botToken == "") { Console.WriteLine("Please enter a bot token."); Console.ReadKey(); Environment.Exit(0); }
-            Utils.mainClient = new Amino.Client(Utils.clientDevice);
-            await Utils.mainClient.login(Utils.clientEmail, Utils.clientPassword);
- 
-
-            var token = Utils.botToken;
-            Events events = new Events();
+            await _utils.CheckFiles();
+            var config = _utils.GetConfig();
+            if (config.BotToken == "") { Console.WriteLine("Please enter a bot token."); Console.ReadKey(); Environment.Exit(0); }
+            _aminoClient = new Amino.Client(config.AminoAccountDeviceId);
+            await _aminoClient.login(config.AminoAccountEmail, config.AminoAccountPassword, null, false);
 
 
             var socketConfig = new DiscordSocketConfig
@@ -45,7 +42,7 @@ namespace AminoBot
 
             Console.WriteLine("Done!");
             Console.WriteLine("Logging in and starting");
-            await client.LoginAsync(TokenType.Bot, token);
+            await client.LoginAsync(TokenType.Bot, config.BotToken);
             await client.StartAsync();
             _interactionService = new InteractionService(client.Rest);
             await _interactionService.AddModulesAsync(Assembly.GetEntryAssembly(), _services);
@@ -55,30 +52,40 @@ namespace AminoBot
             //Events
             client.JoinedGuild += events.onServerJoin;
             client.LeftGuild += events.onServerLeave;
-            client.Ready += events.onClientReady;
-            client.InteractionCreated += events.onInteraction;
+            client.Ready += async () =>
+            {
+
+                await _interactionService.RegisterCommandsGloballyAsync(true);
+                Console.WriteLine("Commands Registered!");
+
+                System.Timers.Timer timer = new();
+                timer.Interval = 120000;
+                timer.AutoReset = true;
+                timer.Elapsed += UpdatePresence;
+            };
+            client.InteractionCreated += async (interaction) =>
+            {
+                // TODO
+            };
             client.ButtonExecuted += events.onButtonPress;
             client.MessageReceived += events.onMsg;
             //Events end here
 
 
             Console.WriteLine("Ready");
+
             await Task.Delay(-1);
 
         }
 
 
-        public static async Task updatePresence()
+        static async void UpdatePresence(object? sender, ElapsedEventArgs e)
         {
-            while(true)
-            {
                 try
                 {
                     await client.SetGameAsync($"/amino-help on {client.Guilds.Count} servers", "", ActivityType.Listening);
                 }
                 catch { }
-                await Task.Delay(25000);
-            }
         }
 
 
@@ -97,8 +104,7 @@ namespace AminoBot
             }
             public async Task onClientReady()
             {
-                await _interactionService.RegisterCommandsGloballyAsync(true);
-                Console.WriteLine("Commands Registered!");
+
                 Utils.InitText();
 
                 _ = Task.Run(async () => updatePresence());

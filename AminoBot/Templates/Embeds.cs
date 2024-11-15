@@ -15,6 +15,7 @@ namespace AminoBot.Templates
             {
                 Text = "Thank you for using AminoBot"
             };
+            embed.Timestamp = DateTime.Now;
             return embed;
         }
 
@@ -27,6 +28,7 @@ namespace AminoBot.Templates
             {
                 Text = "Thank you for using AminoBot"
             };
+            embed.Timestamp = DateTime.Now;
             return embed;
         }
 
@@ -41,10 +43,7 @@ namespace AminoBot.Templates
                 IconUrl = guild.IconUrl,
                 Name = guild.Name
             };
-            embed.Footer = new EmbedFooterBuilder()
-            {
-                Text = $"{DateTime.Now.ToString("dd/MM/yyyy")} / {DateTime.Now.ToString("HH:mm:ss")}"
-            };
+            embed.Timestamp = DateTime.Now;
 
             return embed;
         }
@@ -60,11 +59,7 @@ namespace AminoBot.Templates
                 IconUrl = guild.IconUrl,
                 Name = guild.Name
             };
-            embed.Footer = new EmbedFooterBuilder()
-            {
-                Text = $"{DateTime.Now.ToString("dd/MM/yyyy")} / {DateTime.Now.ToString("HH:mm:ss")}"
-            };
-
+            embed.Timestamp = DateTime.Now;
             return embed;
         }
 
@@ -79,7 +74,7 @@ namespace AminoBot.Templates
             {
                 Text = $"Thank you for using AminoBot!"
             };
-
+            embed.Timestamp = DateTime.Now;
             return embed;
         }
 
@@ -93,7 +88,7 @@ namespace AminoBot.Templates
             {
                 Text = $"Thank you for using AminoBot!"
             };
-
+            embed.Timestamp = DateTime.Now;
             return embed;
         }
 
@@ -107,6 +102,7 @@ namespace AminoBot.Templates
             {
                 Text = $"Thank you for using AminoBot!"
             };
+            embed.Timestamp = DateTime.Now;
 
             return embed;
         }
@@ -121,6 +117,7 @@ namespace AminoBot.Templates
             {
                 Text = $"{DateTime.Now.ToString("dd/MM/yyyy")} / {DateTime.Now.ToString("HH:mm:ss")}"
             };
+            embed.Timestamp = DateTime.Now;
             return embed;
         }
 
@@ -134,6 +131,7 @@ namespace AminoBot.Templates
             {
                 Text = $"{DateTime.Now.ToString("dd/MM/yyyy")} / {DateTime.Now.ToString("HH:mm:ss")}"
             };
+            embed.Timestamp = DateTime.Now;
             return embed;
         }
 
@@ -147,7 +145,7 @@ namespace AminoBot.Templates
             {
                 Text = $"Thank you for using AminoBot!"
             };
-
+            embed.Timestamp = DateTime.Now;
             return embed;
         }
 
