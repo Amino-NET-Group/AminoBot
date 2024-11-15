@@ -1,9 +1,10 @@
 ﻿using Discord;
 using Discord.Interactions;
-using System.Runtime.InteropServices;
 
 namespace AminoBot
 {
+    [CommandContextType(InteractionContextType.Guild, InteractionContextType.BotDm, InteractionContextType.PrivateChannel)]
+    [IntegrationType(ApplicationIntegrationType.UserInstall, ApplicationIntegrationType.GuildInstall)]
     public class Commands : InteractionModuleBase
     {
         [SlashCommand("web-device", "Allows you to generate a prefix 17 device ID")]
@@ -82,14 +83,14 @@ namespace AminoBot
 
                 if (AMProfile.iconUrl != null) { desc = desc + $"\nIconUrl: [{AMProfile.iconUrl.Replace("http://", String.Empty)}]({AMProfile.iconUrl})"; }
                 profile.AddField("Overview", desc);
-                string _desc = AMProfile.content;
-                if (_desc.Length > 1024) { _desc = _desc.Substring(0, 1020); _desc = _desc + "..."; }
+                string? _desc = AMProfile.content;
+                if (_desc?.Length > 1024) { _desc = _desc.Substring(0, 1020); _desc = _desc + "..."; }
                 if (_desc == null) { _desc = "*No Profile Description Available.*"; }
                 profile.AddField("Profile Description", $"{_desc}");
 
                 await FollowupAsync("", new[] { profile.Build() });
             }
-            catch (Exception e) { await FollowupAsync("", new[] { Templates.Embeds.RequestError().Build() }); }
+            catch { await FollowupAsync("", new[] { Templates.Embeds.RequestError().Build() }); }
         }
 
         [SlashCommand("objectid", "Allows you to get an Object ID from an Amino URL")]
@@ -134,7 +135,7 @@ namespace AminoBot
                 string _user;
                 if (userUrl.StartsWith("http")) { _user = client.get_from_code(userUrl).objectId; } else { _user = userUrl; }
                 var user = client.get_user_info(_user);
-                await FollowupAsync("", new Discord.Embed[] { Templates.Embeds.ResponseTemplate(userUrl, user.createdTime).Build() });
+                await FollowupAsync("", new Discord.Embed[] { Templates.Embeds.ResponseTemplate(userUrl, user.createdTime!).Build() });
             }
             catch { await FollowupAsync("", new[] { Templates.Embeds.RequestError().Build() }); }
         }
@@ -147,7 +148,7 @@ namespace AminoBot
             {
                 Amino.Client client = new Amino.Client();
                 var _communityBase = client.get_from_code(URL);
-                string comId = null;
+                string? comId = null;
                 if (_communityBase.Community != null) { comId = _communityBase.Community.communityId.ToString(); } else { comId = _communityBase.communityId.ToString(); }
                 if (comId != null)
                 {
@@ -190,7 +191,7 @@ namespace AminoBot
                     $"\nSearchable: {communityBase.searchable}" +
                     $"\nPrimary Language: {communityBase.primaryLanguage}" +
                     $"\nTagline: {communityBase.tagline}" +
-                    $"\nIconUrl: [{communityBase.iconUrl.Replace("http://", string.Empty)}]({communityBase.iconUrl})";
+                    $"\nIconUrl: [{communityBase.iconUrl?.Replace("http://", string.Empty)}]({communityBase.iconUrl})";
 
                 community.Description = desc;
                 
