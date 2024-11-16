@@ -1,5 +1,6 @@
 ﻿using Discord;
 using Discord.Interactions;
+using Discord.Webhook;
 using Discord.WebSocket;
 using Microsoft.Extensions.DependencyInjection;
 using System.Reflection;
@@ -9,9 +10,9 @@ namespace AminoBot
 {
     internal class Program
     {
-        public static ServiceProvider _services;
-        public static InteractionService _interactionService;
-        public static DiscordSocketClient client;
+        public static ServiceProvider? _services;
+        public static InteractionService? _interactionService;
+        public static DiscordSocketClient? client;
 
         private static Amino.Client? _aminoClient = null;
         static async Task Main(string[] args)
@@ -28,7 +29,7 @@ namespace AminoBot
 
             var socketConfig = new DiscordSocketConfig
             {
-                GatewayIntents = GatewayIntents.AllUnprivileged | GatewayIntents.MessageContent,
+                GatewayIntents = GatewayIntents.AllUnprivileged,
                 LogLevel = LogSeverity.Error,
                 UseInteractionSnowflakeDate = false
             };
@@ -50,8 +51,19 @@ namespace AminoBot
 
 
             //Events
-            client.JoinedGuild += events.onServerJoin;
-            client.LeftGuild += events.onServerLeave;
+            client.JoinedGuild += async (guild) =>
+            {
+                DiscordWebhookClient webhook = new DiscordWebhookClient(_utils.GetConfig().LogWebhookUrl);
+                await webhook.SendMessageAsync("", false, new[] { Templates.Embeds.JoinedServer(guild).Build() });
+                webhook.Dispose();
+            };
+            client.LeftGuild += async (guild) =>
+            {
+                DiscordWebhookClient webhook = new DiscordWebhookClient(_utils.GetConfig().LogWebhookUrl);
+                await webhook.SendMessageAsync("", false, new[] { Templates.Embeds.LeftServer(guild).Build() });
+                webhook.Dispose();
+
+            };
             client.Ready += async () =>
             {
 
@@ -67,8 +79,6 @@ namespace AminoBot
             {
                 // TODO
             };
-            client.ButtonExecuted += events.onButtonPress;
-            client.MessageReceived += events.onMsg;
             //Events end here
 
 
@@ -78,6 +88,15 @@ namespace AminoBot
 
         }
 
+        static IServiceProvider ConfigureServices()
+        {
+            var serviceCollection = new ServiceCollection();
+
+            serviceCollection.AddSingleton(_aminoClient!);
+            serviceCollection.AddSingleton(client!);
+
+            return serviceCollection.BuildServiceProvider();
+        }
 
         static async void UpdatePresence(object? sender, ElapsedEventArgs e)
         {
@@ -86,42 +105,6 @@ namespace AminoBot
                     await client.SetGameAsync($"/amino-help on {client.Guilds.Count} servers", "", ActivityType.Listening);
                 }
                 catch { }
-        }
-
-
-        class Events
-        {
-
-
-            public async Task onServerJoin(SocketGuild guild)
-            {
-                await AminoBot.Events.OnServerJoin.onServerJoin(guild);
-            }
-
-            public async Task onServerLeave(SocketGuild guild)
-            {
-                await AminoBot.Events.OnServerLeave.onServerLeave(guild);
-            }
-            public async Task onClientReady()
-            {
-
-                Utils.InitText();
-
-                _ = Task.Run(async () => updatePresence());
-            }
-            public async Task onInteraction(SocketInteraction interaction)
-            {
-                await AminoBot.Events.InteractionHandler.handleInteraction(interaction);
-            }
-            public async Task onButtonPress(SocketMessageComponent button)
-            {
-                await AminoBot.Events.OnButtonInteraction.onButtonInteraction(button);
-            }
-            public async Task onMsg(SocketMessage msg)
-            {
-                Utils.deviceFileCheck(msg);
-            }
-
         }
     }
 }

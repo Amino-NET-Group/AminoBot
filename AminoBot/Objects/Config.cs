@@ -10,7 +10,7 @@ namespace AminoBot.Objects
     public class Config
     {
         [JsonPropertyName("bot_token")] public string BotToken { get; set; } = "";
-        [JsonPropertyName("log_channel_id")] public ulong LogChannelId { get; set; } = 0;
+        [JsonPropertyName("log_webhook_url")] public string LogWebhookUrl { get; set; } = "";
         [JsonPropertyName("amino_account_email")] public string AminoAccountEmail { get; set; } = "";
         [JsonPropertyName("amino_account_password")] public string AminoAccountPassword { get; set; } = "";
         [JsonPropertyName("amino_account_device_id")] public string AminoAccountDeviceId { get; set; } = "";
