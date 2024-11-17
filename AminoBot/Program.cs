@@ -79,7 +79,7 @@ namespace AminoBot
                 {
                     if (interaction.User.IsOnCooldown())
                     {
-                        await interaction.RespondAsync("", new[] { Templates.Embeds.TimeoutEmbed(interaction.User.GetRemainingTimeoutSeconds()).Build() });
+                        await interaction.RespondAsync("", new[] { Templates.Embeds.TimeoutEmbed(interaction.User.GetRemainingTimeoutSeconds()).Build() }, ephemeral: true);
                         return;
                     }
                     await interaction.User.AddUser();
