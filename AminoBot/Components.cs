@@ -45,6 +45,7 @@ namespace AminoBot
             embed.Title = "AminoBot Info";
             embed.Description = "AminoBot is a Discord Bot designed to act as a simple interface to interact with the Aminoapps API for Developers and Users alike.\nThis project is brought to you by the Amino.NET Group";
             embed.AddField("Links", "[Join our Discord Server!](https://discord.com/invite/2JeE54uG7x)\n[Github](https://github.com/Amino-NET-Group/AminoBot)\n[Amino.NET Github](https://github.com/Amino-NET-Group/Amino.NET)");
+            embed.Color = Color.Teal;
 
             components.WithButton("Help", "amino-help_help", ButtonStyle.Secondary);
             components.WithButton("About", "amino-help_about", ButtonStyle.Primary, disabled: true);

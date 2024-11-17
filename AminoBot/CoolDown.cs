@@ -37,7 +37,7 @@ namespace AminoBot
         public static long GetRemainingTimeoutSeconds(this IUser targetUser)
         {
             if (!timeoutList.ContainsKey(targetUser.Id)) return 0;
-            return (DateTimeOffset.UtcNow.ToUnixTimeSeconds() - timeoutList[targetUser.Id]);
+            return (timeoutList[targetUser.Id] - DateTimeOffset.UtcNow.ToUnixTimeSeconds());
         }
 
     }

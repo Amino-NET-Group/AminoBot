@@ -252,7 +252,7 @@ namespace AminoBot
             components.WithButton("Help", "amino-help_help", ButtonStyle.Primary, disabled: true);
             components.WithButton("About", "amino-help_about", ButtonStyle.Secondary);
 
-            await RespondAsync("", embeds: new[] { embed.Build() }, components: components.Build() );
+            await FollowupAsync("", embeds: new[] { embed.Build() }, components: components.Build() );
         }
 
     }

@@ -10,7 +10,7 @@ namespace AminoBot
 {
     internal class Program
     {
-        public static ServiceProvider? _services;
+        public static IServiceProvider? _services;
         public static InteractionService? _interactionService;
         public static DiscordSocketClient? client;
 
@@ -42,6 +42,7 @@ namespace AminoBot
             Console.WriteLine("Logging in and starting");
             await client.LoginAsync(TokenType.Bot, config.BotToken);
             await client.StartAsync();
+            _services = ConfigureServices();
             _interactionService = new InteractionService(client.Rest);
             await _interactionService.AddModulesAsync(Assembly.GetEntryAssembly(), _services);
             Console.WriteLine("Bot started");
