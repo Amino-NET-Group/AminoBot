@@ -1,5 +1,4 @@
-﻿using Discord;
-using System.Security.Cryptography;
+﻿using System.Security.Cryptography;
 
 namespace AminoBot
 {
@@ -23,7 +22,7 @@ namespace AminoBot
         }
 
 
-        public static string deviceId(int prefixMode = 19)
+        public static string DeviceId(int prefixMode = 19)
         {
             string prefix = "19";
             string key = "E7309ECC0953C6FA60005B2765F99DBBC965C8E9";

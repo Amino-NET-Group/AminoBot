@@ -38,9 +38,6 @@ namespace AminoBot
 
 
 
-
-
-
             Console.WriteLine("Done!");
             Console.WriteLine("Logging in and starting");
             await client.LoginAsync(TokenType.Bot, config.BotToken);

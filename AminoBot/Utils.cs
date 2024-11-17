@@ -1,8 +1,4 @@
-﻿using Discord;
-using Discord.WebSocket;
-using System.Net;
-using System.Security.Cryptography;
-using System.Text.Json;
+﻿using System.Text.Json;
 
 namespace AminoBot
 {

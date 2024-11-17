@@ -1,12 +1,7 @@
 ﻿using Discord;
 using Discord.Interactions;
 using Discord.WebSocket;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+
 
 namespace AminoBot
 {
@@ -49,9 +44,7 @@ namespace AminoBot
             ComponentBuilder components = new ComponentBuilder();
             embed.Title = "AminoBot Info";
             embed.Description = "AminoBot is a Discord Bot designed to act as a simple interface to interact with the Aminoapps API for Developers and Users alike.\nThis project is brought to you by the Amino.NET Group";
-            embed.AddField("[Join our Discord Server!](https://discord.com/invite/2JeE54uG7x)", "");
-            embed.AddField("[Github](https://github.com/Amino-NET-Group/AminoBot)", "");
-            embed.AddField("[Amino.NET Github](https://github.com/Amino-NET-Group/Amino.NET)", "");
+            embed.AddField("Links", "[Join our Discord Server!](https://discord.com/invite/2JeE54uG7x)\n[Github](https://github.com/Amino-NET-Group/AminoBot)\n[Amino.NET Github](https://github.com/Amino-NET-Group/Amino.NET)");
 
             components.WithButton("Help", "amino-help_help", ButtonStyle.Secondary);
             components.WithButton("About", "amino-help_about", ButtonStyle.Primary, disabled: true);

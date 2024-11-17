@@ -107,7 +107,7 @@ namespace AminoBot.Templates
             return embed;
         }
 
-        public static EmbedBuilder webDeviceCountWarn(int currCount)
+        public static EmbedBuilder WebDeviceCountWarn(int currCount)
         {
             EmbedBuilder embed = new EmbedBuilder();
             embed.Color = Color.Blue;
@@ -121,7 +121,7 @@ namespace AminoBot.Templates
             return embed;
         }
 
-        public static EmbedBuilder webDevicesAdded(int count, int total)
+        public static EmbedBuilder WebDevicesAdded(int count, int total)
         {
             EmbedBuilder embed = new EmbedBuilder();
             embed.Color = Color.Blue;
@@ -135,7 +135,7 @@ namespace AminoBot.Templates
             return embed;
         }
 
-        public static EmbedBuilder noWebDevices()
+        public static EmbedBuilder NoWebDevices()
         {
             EmbedBuilder embed = new EmbedBuilder();
             embed.Color = Color.Blue;
