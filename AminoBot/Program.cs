@@ -77,7 +77,18 @@ namespace AminoBot
             };
             client.InteractionCreated += async (interaction) =>
             {
-                // TODO
+                if (interaction.Type == InteractionType.ApplicationCommand)
+                {
+                    if (interaction.User.IsOnCooldown())
+                    {
+                        await interaction.RespondAsync("", new[] { Templates.Embeds.TimeoutEmbed(interaction.User.GetRemainingTimeoutSeconds()).Build() });
+                        return;
+                    }
+                    await interaction.User.AddUser();
+                }
+
+                var context = new SocketInteractionContext(client, interaction);
+                var result = await _interactionService.ExecuteCommandAsync(context, _services);
             };
             //Events end here
 
@@ -94,6 +105,7 @@ namespace AminoBot
 
             serviceCollection.AddSingleton(_aminoClient!);
             serviceCollection.AddSingleton(client!);
+            serviceCollection.AddTransient<Utils>();
 
             return serviceCollection.BuildServiceProvider();
         }
@@ -102,7 +114,7 @@ namespace AminoBot
         {
                 try
                 {
-                    await client.SetGameAsync($"/amino-help on {client.Guilds.Count} servers", "", ActivityType.Listening);
+                    await client!.SetGameAsync($"/amino-help on {client.Guilds.Count} servers", "", ActivityType.Listening);
                 }
                 catch { }
         }

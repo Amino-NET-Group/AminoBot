@@ -14,5 +14,6 @@ namespace AminoBot.Objects
         [JsonPropertyName("amino_account_email")] public string AminoAccountEmail { get; set; } = "";
         [JsonPropertyName("amino_account_password")] public string AminoAccountPassword { get; set; } = "";
         [JsonPropertyName("amino_account_device_id")] public string AminoAccountDeviceId { get; set; } = "";
+        [JsonPropertyName("command_timeout_seconds")] public int CommandTimeout { get; set; } = 15;
     }
 }

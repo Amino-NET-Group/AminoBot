@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Discord;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,42 +9,41 @@ namespace AminoBot
 {
     public static class CoolDown
     {
-        static Dictionary<ulong, int> timeOutList = new Dictionary<ulong, int>();
+        static Dictionary<ulong, long> timeoutList = new Dictionary<ulong, long>(); // userId : expirationTime
 
-        public static bool IsCooldown(ulong userId)
-        {
-            if (timeOutList.ContainsKey(userId)) { return true; } else { return false; }
-        }
 
-        public static async Task AddUser(ulong userId)
+        /// <summary>
+        /// Checks if the given user is on Cooldown, if the time expired it will automatically remove them from the list
+        /// </summary>
+        /// <param name="targetUser"></param>
+        /// <returns></returns>
+        public static bool IsOnCooldown(this IUser targetUser)
         {
-            _ = Task.Run(async () =>
+            if (!timeoutList.ContainsKey(targetUser.Id)) return false;
+            if (timeoutList[targetUser.Id] <= DateTimeOffset.UtcNow.ToUnixTimeSeconds())
             {
-                int waitTime = 30;
-                timeOutList.Add(userId, waitTime);
-
-                for (int i = waitTime; i > 0; i--)
-                {
-                    timeOutList[userId] = i;
-                    await Task.Delay(1000);
-                }
-                if (timeOutList.ContainsKey(userId)) { timeOutList.Remove(userId); }
-
-            });
+                timeoutList.Remove(targetUser.Id);
+                return false;
+            }
+            return true;
         }
-        public static async Task RemoveUser(ulong userId)
+
+
+        public static Task AddUser(this IUser targetUser)
         {
-            _ = Task.Run(async () =>
+            if(!timeoutList.ContainsKey(targetUser.Id))
             {
-                await Task.Delay(1000);
-                if (timeOutList.ContainsKey(userId)) { timeOutList.Remove(userId); }
-            });
+                timeoutList.Add(targetUser.Id, (DateTimeOffset.UtcNow.ToUnixTimeSeconds() + new Utils().GetConfig().CommandTimeout));
+            }
+            return Task.CompletedTask;
         }
 
 
-        public static int GetTimeoutSeconds(ulong userId)
+        public static long GetRemainingTimeoutSeconds(this IUser targetUser)
         {
-            if (timeOutList.ContainsKey(userId)) { return timeOutList[userId]; } else { return 0; }
+            if (!timeoutList.ContainsKey(targetUser.Id)) return 0;
+            return (DateTimeOffset.UtcNow.ToUnixTimeSeconds() - timeoutList[targetUser.Id]);
         }
+
     }
 }

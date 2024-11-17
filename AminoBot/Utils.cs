@@ -12,17 +12,6 @@ namespace AminoBot
         public const string APP_ROOT = "app_config";
 
 
-
-
-
-        public static void InitText()
-        {
-            aboutText = $"The AminoBot Project is a Discord Bot dedicated to being an Amino toolkit in the discord bot Format\n" +
-                        $"The AminoBot Project is made in the C# Programming language and is powered by **Amino.NET**(*<https://github.com/FabioGaming/Amino.Net>*)\n" +
-                        $"This bot has been developed and made possible by **@fabiogaming**(*1071594003717423134*)";
-
-        }
-
         public Task CheckFiles()
         {
             if(!Directory.Exists(APP_ROOT)) { CreateFiles(); }
@@ -43,6 +32,6 @@ namespace AminoBot
         }
 
         public Objects.Config GetConfig() => JsonSerializer.Deserialize<Objects.Config>(File.ReadAllText($"{APP_ROOT}/config.json"))!;
-
+        public List<string> GetWebDeviceIds() => File.ReadAllLines($"{APP_ROOT}/webDevs.txt").ToList();
     }
 }

@@ -92,7 +92,7 @@ namespace AminoBot.Templates
             return embed;
         }
 
-        public static EmbedBuilder TimeOutEmbed(int secondsLeft)
+        public static EmbedBuilder TimeoutEmbed(long secondsLeft)
         {
             EmbedBuilder embed = new EmbedBuilder();
             embed.Color = Color.Blue;

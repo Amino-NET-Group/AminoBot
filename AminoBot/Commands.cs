@@ -7,15 +7,26 @@ namespace AminoBot
     [IntegrationType(ApplicationIntegrationType.UserInstall, ApplicationIntegrationType.GuildInstall)]
     public class Commands : InteractionModuleBase
     {
+
+        private readonly Amino.Client _aminoClient;
+        private readonly Utils _utils;
+
+        public Commands(Amino.Client client, Utils utils)
+        {
+            _aminoClient = client;
+            _utils = utils;
+        }
+
         [SlashCommand("web-device", "Allows you to generate a prefix 17 device ID")]
         public async Task GetWebDevice()
         {
             await DeferAsync();
             try
             {
-                Utils.ExtraGen.checkCount();
-                if (Utils.webDevices.Count == 0) { await RespondAsync("", new[] { Templates.Embeds.noWebDevices().Build() }); }
-                await FollowupAsync("", new[] { Templates.Embeds.ResponseEmbed(Utils.ExtraGen.GetWebDevice()).Build() });
+
+                if (_utils.GetWebDeviceIds().Count == 0) { await RespondAsync("", new[] { Templates.Embeds.noWebDevices().Build() }); }
+                string randomDeviceId = _utils.GetWebDeviceIds()[new Random().Next(_utils.GetWebDeviceIds().Count)];
+                await FollowupAsync("", new[] { Templates.Embeds.ResponseEmbed(randomDeviceId).Build() });
             }
             catch { await FollowupAsync("", new[] { Templates.Embeds.ResourceUnavailable().Build() }); }
         }

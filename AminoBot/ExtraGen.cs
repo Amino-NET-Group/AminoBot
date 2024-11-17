@@ -22,46 +22,6 @@ namespace AminoBot
                              .ToArray();
         }
 
-        public static string GetWebDevice()
-        {
-            try
-            {
-                Random rdm = new Random();
-                string dev = webDevices[rdm.Next(webDevices.Count)];
-
-                webDevices.Remove(dev);
-                using (StreamWriter sw = File.CreateText("Aminobot/webDevs.txt"))
-                {
-                    foreach (string device in webDevices)
-                    {
-                        sw.WriteLine(device);
-                    }
-                }
-
-                if (webDevices.Count < 100) { _ = Task.Run(async () => { warnCount(); }); }
-
-                return dev;
-            }
-            catch { throw new Exception(); }
-        }
-
-        public static void checkCount()
-        {
-            if (webDevices.Count < 100) { _ = Task.Run(async () => { warnCount(); }); }
-        }
-
-        private static async void warnCount()
-        {
-            try
-            {
-                ITextChannel channel = (ITextChannel)Program.client.GetChannel(Convert.ToUInt64(Utils.logChannel));
-                await channel.SendMessageAsync("", false, Templates.Embeds.webDeviceCountWarn(webDevices.Count).Build());
-            }
-            catch { }
-
-        }
-
-
 
         public static string deviceId(int prefixMode = 19)
         {
