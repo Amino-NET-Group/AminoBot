@@ -15,6 +15,7 @@ namespace AminoBot.Templates
             {
                 Text = "Thank you for using AminoBot"
             };
+            embed.Timestamp = DateTime.Now;
             return embed;
         }
 
@@ -27,6 +28,7 @@ namespace AminoBot.Templates
             {
                 Text = "Thank you for using AminoBot"
             };
+            embed.Timestamp = DateTime.Now;
             return embed;
         }
 
@@ -41,10 +43,7 @@ namespace AminoBot.Templates
                 IconUrl = guild.IconUrl,
                 Name = guild.Name
             };
-            embed.Footer = new EmbedFooterBuilder()
-            {
-                Text = $"{DateTime.Now.ToString("dd/MM/yyyy")} / {DateTime.Now.ToString("HH:mm:ss")}"
-            };
+            embed.Timestamp = DateTime.Now;
 
             return embed;
         }
@@ -60,11 +59,7 @@ namespace AminoBot.Templates
                 IconUrl = guild.IconUrl,
                 Name = guild.Name
             };
-            embed.Footer = new EmbedFooterBuilder()
-            {
-                Text = $"{DateTime.Now.ToString("dd/MM/yyyy")} / {DateTime.Now.ToString("HH:mm:ss")}"
-            };
-
+            embed.Timestamp = DateTime.Now;
             return embed;
         }
 
@@ -79,7 +74,7 @@ namespace AminoBot.Templates
             {
                 Text = $"Thank you for using AminoBot!"
             };
-
+            embed.Timestamp = DateTime.Now;
             return embed;
         }
 
@@ -93,11 +88,11 @@ namespace AminoBot.Templates
             {
                 Text = $"Thank you for using AminoBot!"
             };
-
+            embed.Timestamp = DateTime.Now;
             return embed;
         }
 
-        public static EmbedBuilder TimeOutEmbed(int secondsLeft)
+        public static EmbedBuilder TimeoutEmbed(long secondsLeft)
         {
             EmbedBuilder embed = new EmbedBuilder();
             embed.Color = Color.Blue;
@@ -107,11 +102,12 @@ namespace AminoBot.Templates
             {
                 Text = $"Thank you for using AminoBot!"
             };
+            embed.Timestamp = DateTime.Now;
 
             return embed;
         }
 
-        public static EmbedBuilder webDeviceCountWarn(int currCount)
+        public static EmbedBuilder WebDeviceCountWarn(int currCount)
         {
             EmbedBuilder embed = new EmbedBuilder();
             embed.Color = Color.Blue;
@@ -121,10 +117,11 @@ namespace AminoBot.Templates
             {
                 Text = $"{DateTime.Now.ToString("dd/MM/yyyy")} / {DateTime.Now.ToString("HH:mm:ss")}"
             };
+            embed.Timestamp = DateTime.Now;
             return embed;
         }
 
-        public static EmbedBuilder webDevicesAdded(int count, int total)
+        public static EmbedBuilder WebDevicesAdded(int count, int total)
         {
             EmbedBuilder embed = new EmbedBuilder();
             embed.Color = Color.Blue;
@@ -134,10 +131,11 @@ namespace AminoBot.Templates
             {
                 Text = $"{DateTime.Now.ToString("dd/MM/yyyy")} / {DateTime.Now.ToString("HH:mm:ss")}"
             };
+            embed.Timestamp = DateTime.Now;
             return embed;
         }
 
-        public static EmbedBuilder noWebDevices()
+        public static EmbedBuilder NoWebDevices()
         {
             EmbedBuilder embed = new EmbedBuilder();
             embed.Color = Color.Blue;
@@ -147,7 +145,7 @@ namespace AminoBot.Templates
             {
                 Text = $"Thank you for using AminoBot!"
             };
-
+            embed.Timestamp = DateTime.Now;
             return embed;
         }
 

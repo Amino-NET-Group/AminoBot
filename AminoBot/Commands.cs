@@ -1,26 +1,42 @@
 ﻿using Discord;
 using Discord.Interactions;
-using System.Runtime.InteropServices;
+using Discord.WebSocket;
 
 namespace AminoBot
 {
+    [CommandContextType(InteractionContextType.Guild, InteractionContextType.BotDm, InteractionContextType.PrivateChannel)]
+    [IntegrationType(ApplicationIntegrationType.UserInstall, ApplicationIntegrationType.GuildInstall)]
     public class Commands : InteractionModuleBase
     {
+
+        private readonly Amino.Client _aminoClient;
+        private readonly Utils _utils;
+        private readonly DiscordSocketClient _discordClient;
+
+        public Commands(Amino.Client client, Utils utils, DiscordSocketClient dClient)
+        {
+            _aminoClient = client;
+            _utils = utils;
+            _discordClient = dClient;
+
+        }
+
         [SlashCommand("web-device", "Allows you to generate a prefix 17 device ID")]
         public async Task GetWebDevice()
         {
             await DeferAsync();
             try
             {
-                Utils.ExtraGen.checkCount();
-                if (Utils.webDevices.Count == 0) { await RespondAsync("", new[] { Templates.Embeds.noWebDevices().Build() }); }
-                await FollowupAsync("", new[] { Templates.Embeds.ResponseEmbed(Utils.ExtraGen.GetWebDevice()).Build() });
+
+                if (_utils.GetWebDeviceIds().Count == 0) { await RespondAsync("", new[] { Templates.Embeds.NoWebDevices().Build() }); }
+                string randomDeviceId = _utils.GetWebDeviceIds()[new Random().Next(_utils.GetWebDeviceIds().Count)];
+                await FollowupAsync("", new[] { Templates.Embeds.ResponseEmbed(randomDeviceId).Build() });
             }
             catch { await FollowupAsync("", new[] { Templates.Embeds.ResourceUnavailable().Build() }); }
         }
 
         [SlashCommand("verify", "Check if a device ID is valid or not")]
-        public async Task checkDevice(string deviceId)
+        public async Task CheckDevice(string deviceId)
         {
             await DeferAsync();
             Amino.Client client = new Amino.Client();
@@ -39,10 +55,9 @@ namespace AminoBot
             try
             {
 
-                Amino.Client client = Utils.mainClient;
                 string _profileBase = input;
-                if (input.StartsWith("http")) { _profileBase = client.get_from_code(input).objectId; }
-                string profileBase = client.get_from_id(_profileBase, Amino.Types.Object_Types.User).shareURLShortCode;
+                if (input.StartsWith("http")) { _profileBase = _aminoClient.get_from_code(input).objectId; }
+                string profileBase = _aminoClient.get_from_id(_profileBase, Amino.Types.Object_Types.User).shareURLShortCode;
                 if (profileBase != null)
                 {
                     await FollowupAsync("", new Discord.Embed[] { Templates.Embeds.ResponseTemplate(input, profileBase).Build() });
@@ -53,16 +68,16 @@ namespace AminoBot
         }
 
         [SlashCommand("show-profile", "Returns public user info in an Embed")]
-        public async Task getProfile(string user)
+        public async Task GetProfile(string user)
         {
             await DeferAsync();
             try
             {
                 string profileBase = user;
 
-                if (user.StartsWith("http")) { profileBase = Utils.mainClient.get_from_code(user).objectId; }
-                var AMProfile = Utils.mainClient.get_user_info(profileBase);
-                var contentBase = Utils.mainClient.get_from_id(profileBase, Amino.Types.Object_Types.User);
+                if (user.StartsWith("http")) { profileBase = _aminoClient.get_from_code(user).objectId; }
+                var AMProfile = _aminoClient.get_user_info(profileBase);
+                var contentBase = _aminoClient.get_from_id(profileBase, Amino.Types.Object_Types.User);
 
                 EmbedBuilder profile = new EmbedBuilder();
                 profile.Color = Color.Teal;
@@ -82,18 +97,18 @@ namespace AminoBot
 
                 if (AMProfile.iconUrl != null) { desc = desc + $"\nIconUrl: [{AMProfile.iconUrl.Replace("http://", String.Empty)}]({AMProfile.iconUrl})"; }
                 profile.AddField("Overview", desc);
-                string _desc = AMProfile.content;
-                if (_desc.Length > 1024) { _desc = _desc.Substring(0, 1020); _desc = _desc + "..."; }
+                string? _desc = AMProfile.content;
+                if (_desc?.Length > 1024) { _desc = _desc.Substring(0, 1020); _desc = _desc + "..."; }
                 if (_desc == null) { _desc = "*No Profile Description Available.*"; }
                 profile.AddField("Profile Description", $"{_desc}");
 
                 await FollowupAsync("", new[] { profile.Build() });
             }
-            catch (Exception e) { await FollowupAsync("", new[] { Templates.Embeds.RequestError().Build() }); }
+            catch { await FollowupAsync("", new[] { Templates.Embeds.RequestError().Build() }); }
         }
 
         [SlashCommand("objectid", "Allows you to get an Object ID from an Amino URL")]
-        public async Task getObjectId(string URL)
+        public async Task GetObjectId(string URL)
         {
             await DeferAsync();
             try
@@ -113,41 +128,40 @@ namespace AminoBot
         }
 
         [SlashCommand("device-extra", "Allows you to generate device IDs from a list of prefixes")]
-        public async Task extraDeviceGen([Choice("18", 18), Choice("19", 19), Choice("22", 22), Choice("32", 32), Choice("42", 42), Choice("52", 52)] int prefix)
+        public async Task ExtraDeviceGen([Choice("18", 18), Choice("19", 19), Choice("22", 22), Choice("32", 32), Choice("42", 42), Choice("52", 52)] int prefix)
         {
-            await RespondAsync("", new[] { Templates.Embeds.ResponseEmbed(Utils.ExtraGen.deviceId(prefix).ToUpper()).Build() });
+            await RespondAsync("", new[] { Templates.Embeds.ResponseEmbed(ExtraGen.DeviceId(prefix).ToUpper()).Build() });
         }
 
         [SlashCommand("device", "Generates a basic Amino-Device-ID")]
-        public async Task device()
+        public async Task Device()
         {
             await RespondAsync("", new[] { Templates.Embeds.ResponseEmbed(Amino.helpers.generate_device_id()).Build() });
         }
 
         [SlashCommand("created-time", "Allows you to see when a user joined Amino")]
-        public async Task createdTime(string userUrl)
+        public async Task CreatedTime(string userUrl)
         {
             await DeferAsync();
             try
             {
-                Amino.Client client = new Amino.Client();
                 string _user;
-                if (userUrl.StartsWith("http")) { _user = client.get_from_code(userUrl).objectId; } else { _user = userUrl; }
-                var user = client.get_user_info(_user);
-                await FollowupAsync("", new Discord.Embed[] { Templates.Embeds.ResponseTemplate(userUrl, user.createdTime).Build() });
+                if (userUrl.StartsWith("http")) { _user = _aminoClient.get_from_code(userUrl).objectId; } else { _user = userUrl; }
+                var user = _aminoClient.get_user_info(_user);
+                await FollowupAsync("", new Discord.Embed[] { Templates.Embeds.ResponseTemplate(userUrl, user.createdTime!).Build() });
             }
             catch { await FollowupAsync("", new[] { Templates.Embeds.RequestError().Build() }); }
         }
 
         [SlashCommand("communityid", "Allows you to get the Community ID from a Community URL or post, chat or user URL within a community")]
-        public async Task getCommunityId(string URL)
+        public async Task GetCommunityId(string URL)
         {
             await DeferAsync();
             try
             {
                 Amino.Client client = new Amino.Client();
                 var _communityBase = client.get_from_code(URL);
-                string comId = null;
+                string? comId = null;
                 if (_communityBase.Community != null) { comId = _communityBase.Community.communityId.ToString(); } else { comId = _communityBase.communityId.ToString(); }
                 if (comId != null)
                 {
@@ -190,7 +204,7 @@ namespace AminoBot
                     $"\nSearchable: {communityBase.searchable}" +
                     $"\nPrimary Language: {communityBase.primaryLanguage}" +
                     $"\nTagline: {communityBase.tagline}" +
-                    $"\nIconUrl: [{communityBase.iconUrl.Replace("http://", string.Empty)}]({communityBase.iconUrl})";
+                    $"\nIconUrl: [{communityBase.iconUrl?.Replace("http://", string.Empty)}]({communityBase.iconUrl})";
 
                 community.Description = desc;
                 
@@ -220,36 +234,25 @@ namespace AminoBot
 
 
         [SlashCommand("amino-help", "See a list of commands and info about this bot!")]
-        public async Task help()
+        public async Task Help()
         {
-            EmbedBuilder response = new EmbedBuilder();
-            response.Color = Color.Blue;
-            response.Title = "AminoBot Help";
-            response.Description = Utils.helpText;
-            response.Footer = new EmbedFooterBuilder()
+            await DeferAsync();
+            EmbedBuilder embed = new EmbedBuilder();
+            ComponentBuilder components = new ComponentBuilder();
+
+            embed.Color = Color.Teal;
+            embed.Title = "AminoBot Help";
+            embed.Description = "A list of all commands";
+
+            foreach (var command in await _discordClient.GetGlobalApplicationCommandsAsync())
             {
-                Text = "Thank you for using AminoBot"
-            };
-            response.AddField("Links", "[GitHub](https://github.com/Amino-NET-Group/AminoBot)\n[Amino.NET Server](https://discord.gg/2WjekrvArr)\n[Amino.NET GitHub](https://github.com/Amino-NET-Group/Amino.Net)");
+                embed.AddField($"</{command.Name}:{command.Id}>", command.Description);
+            }
 
+            components.WithButton("Help", "amino-help_help", ButtonStyle.Primary, disabled: true);
+            components.WithButton("About", "amino-help_about", ButtonStyle.Secondary);
 
-
-            var helpButton = new ButtonBuilder();
-            helpButton.IsDisabled = true;
-            helpButton.Style = ButtonStyle.Primary;
-            helpButton.Label = "Help";
-            helpButton.CustomId = "amino-help-help";
-
-            var InfoButton = new ButtonBuilder();
-            InfoButton.IsDisabled = false;
-            InfoButton.Style = ButtonStyle.Secondary;
-            InfoButton.Label = "About";
-            InfoButton.CustomId = "amino-help-about";
-
-
-            var msgcomponents = new ComponentBuilder().WithButton(helpButton).WithButton(InfoButton);
-
-            await RespondAsync("", embeds: new[] { response.Build() }, components: msgcomponents.Build());
+            await FollowupAsync("", embeds: new[] { embed.Build() }, components: components.Build() );
         }
 
     }
