@@ -28,7 +28,7 @@ namespace AminoBot
             try
             {
 
-                if (_utils.GetWebDeviceIds().Count == 0) { await RespondAsync("", new[] { Templates.Embeds.noWebDevices().Build() }); }
+                if (_utils.GetWebDeviceIds().Count == 0) { await RespondAsync("", new[] { Templates.Embeds.NoWebDevices().Build() }); }
                 string randomDeviceId = _utils.GetWebDeviceIds()[new Random().Next(_utils.GetWebDeviceIds().Count)];
                 await FollowupAsync("", new[] { Templates.Embeds.ResponseEmbed(randomDeviceId).Build() });
             }
@@ -55,10 +55,9 @@ namespace AminoBot
             try
             {
 
-                Amino.Client client = Utils.mainClient;
                 string _profileBase = input;
-                if (input.StartsWith("http")) { _profileBase = client.get_from_code(input).objectId; }
-                string profileBase = client.get_from_id(_profileBase, Amino.Types.Object_Types.User).shareURLShortCode;
+                if (input.StartsWith("http")) { _profileBase = _aminoClient.get_from_code(input).objectId; }
+                string profileBase = _aminoClient.get_from_id(_profileBase, Amino.Types.Object_Types.User).shareURLShortCode;
                 if (profileBase != null)
                 {
                     await FollowupAsync("", new Discord.Embed[] { Templates.Embeds.ResponseTemplate(input, profileBase).Build() });
@@ -76,9 +75,9 @@ namespace AminoBot
             {
                 string profileBase = user;
 
-                if (user.StartsWith("http")) { profileBase = Utils.mainClient.get_from_code(user).objectId; }
-                var AMProfile = Utils.mainClient.get_user_info(profileBase);
-                var contentBase = Utils.mainClient.get_from_id(profileBase, Amino.Types.Object_Types.User);
+                if (user.StartsWith("http")) { profileBase = _aminoClient.get_from_code(user).objectId; }
+                var AMProfile = _aminoClient.get_user_info(profileBase);
+                var contentBase = _aminoClient.get_from_id(profileBase, Amino.Types.Object_Types.User);
 
                 EmbedBuilder profile = new EmbedBuilder();
                 profile.Color = Color.Teal;
@@ -131,7 +130,7 @@ namespace AminoBot
         [SlashCommand("device-extra", "Allows you to generate device IDs from a list of prefixes")]
         public async Task ExtraDeviceGen([Choice("18", 18), Choice("19", 19), Choice("22", 22), Choice("32", 32), Choice("42", 42), Choice("52", 52)] int prefix)
         {
-            await RespondAsync("", new[] { Templates.Embeds.ResponseEmbed(Utils.ExtraGen.deviceId(prefix).ToUpper()).Build() });
+            await RespondAsync("", new[] { Templates.Embeds.ResponseEmbed(ExtraGen.DeviceId(prefix).ToUpper()).Build() });
         }
 
         [SlashCommand("device", "Generates a basic Amino-Device-ID")]
@@ -146,10 +145,9 @@ namespace AminoBot
             await DeferAsync();
             try
             {
-                Amino.Client client = new Amino.Client();
                 string _user;
-                if (userUrl.StartsWith("http")) { _user = client.get_from_code(userUrl).objectId; } else { _user = userUrl; }
-                var user = client.get_user_info(_user);
+                if (userUrl.StartsWith("http")) { _user = _aminoClient.get_from_code(userUrl).objectId; } else { _user = userUrl; }
+                var user = _aminoClient.get_user_info(_user);
                 await FollowupAsync("", new Discord.Embed[] { Templates.Embeds.ResponseTemplate(userUrl, user.createdTime!).Build() });
             }
             catch { await FollowupAsync("", new[] { Templates.Embeds.RequestError().Build() }); }
